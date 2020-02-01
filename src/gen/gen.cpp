@@ -12,6 +12,20 @@
 
 namespace gen
 {
+    std::string gen_namespace(node n)
+    {
+        std::string res;
+        set_nspace(n.get("identifier").get(0).value);
+
+        for(node n : n.get("level").get_all())
+        {
+            res += gen_function(n);
+        }
+
+        set_nspace(""); // TODO: Make it so you can nest namespaces
+        return res;
+    }
+
     std::string generate(std::vector<node> toplevel)
     {
         std::string result;
@@ -36,6 +50,12 @@ namespace gen
                 log(debug,"Generating function");
 
                 result += gen_function(n);
+            }
+            else if(n.value == "namespace")
+            {
+                log(debug,"Generating namespace");
+
+                result += gen_namespace(n);
             }
             else if(n.value == "import")
             {

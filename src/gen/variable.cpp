@@ -1,6 +1,7 @@
 #include "variable.hpp"
-
 #include "values.hpp"
+#include "types.hpp"
+
 #include <iostream>
 
 variable::variable()
@@ -15,7 +16,8 @@ namespace gen
     {
         std::string res;
 
-        res += n.get("data_type").get(0).value;
+        //res += n.get("data_type").get(0).value;
+        res += gen_dtype(n.get("data_type"));
         res += " ";
         res += n.get("identifier").get(0).value;
         res += ";\n";

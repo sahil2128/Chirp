@@ -1,0 +1,1 @@
+void  io_println(char  * txt){}

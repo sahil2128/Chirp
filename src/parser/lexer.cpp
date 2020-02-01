@@ -49,7 +49,7 @@ namespace parser
         {
             t.type = import_kw;
         }
-        else if(word == "int" || word == "char" || word == "bool" || word == "byte")
+        else if(word == "ptr" || word == "int" || word == "char" || word == "bool" || word == "byte" || word == "none")
         {
             t.type = dtype;
         }

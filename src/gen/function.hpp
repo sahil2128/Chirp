@@ -22,6 +22,8 @@ namespace gen
 {
     std::string gen_entry(node);
     std::string gen_function_call(node);
-    std::string gen_function_decl(node);
     std::string gen_function(node);
+    
+    void set_nspace(std::string);
+    std::string get_nspace();
 }

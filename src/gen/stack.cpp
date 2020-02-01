@@ -7,6 +7,7 @@
 namespace gen
 {
     int height = 0;
+    std::string name_space;
     std::vector<variable> vars;
 
     void push_var(variable v)
@@ -30,7 +31,7 @@ namespace gen
         handler::acc_error("Variable " + id + " isn't declared yet.");
         return var;
     }
-
+    
     void stack_up()
     {
         height++;

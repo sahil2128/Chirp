@@ -1,10 +1,12 @@
 #include "function.hpp"
 #include "compound.hpp"
 #include "variable.hpp"
+#include "types.hpp"
 
 namespace gen
 {
     std::vector<function> funcs;
+    std::string nspace;
 
     std::string gen_entry(node n)
     {
@@ -26,19 +28,16 @@ namespace gen
         return res;
     }
 
-    std::string gen_function_decl(node n)
-    {
-        std::string res;
-
-        return res;
-    }
-
     std::string gen_function(node n)
     {
         std::string res;
 
-        res += n.get("data_type").get(0).value;
+        res += gen_dtype(n.get("data_type"));
         res += " ";
+        if(!nspace.empty())
+        {
+            res += nspace + "_";
+        }
         res += n.get("identifier").get(0).value;
         res += "(";
         
@@ -66,5 +65,15 @@ namespace gen
         res += gen_compound(n.get("compound"));
 
         return res;
+    }
+
+    void set_nspace(std::string txt)
+    {
+        nspace = txt;
+    }
+
+    std::string get_nspace()
+    {
+        return nspace;
     }
 }

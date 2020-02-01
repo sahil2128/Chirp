@@ -47,7 +47,7 @@ namespace build
     void delete_file()
     {
         // Unefficient, should be changed
-        system("rm temp.c");
+        //system("rm temp.c");
     }
 
     void build_file(std::string content, std::string target)

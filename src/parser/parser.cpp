@@ -13,9 +13,27 @@ namespace parser
         node d("data_type");
 
         token t = look_now();
-        if(match(dtype))
+        
+        while(match(dtype))
         {
-            if(t.value == "int")
+            /*
+            if(t.value == "ptr")
+            {
+                d.push(node("pointer"));
+
+                if(look_now().type == dtype)
+                {
+                    t = look_now();
+                    match(dtype);
+                }
+            }
+            */
+
+            if(t.value == "ptr")
+            {
+                d.push(node("pointer"));
+            }
+            else if(t.value == "int")
             {
                 d.push(node("int"));
             }
@@ -33,12 +51,9 @@ namespace parser
             }
             else
             {
-                d.push(node("object??"));
+                d.push(node("error??"));
             }
-        }
-        else
-        {
-            // error or something
+            t = look_now();
         }
 
         return d;
@@ -511,6 +526,27 @@ namespace parser
         return e;
     }
 
+    node get_namespace()
+    {
+        node n("namespace");
+        expect(namespace_kw);
+
+        std::string id = look_now().value;
+        expect(ident);
+
+        n.push(node("identifier")).push(id);
+        
+        expect(lbrace);
+        n.push(node("level"));
+
+        while(!match(rbrace))
+        {
+            n.get("level").push(get_func());
+        }
+
+        return n;
+    }
+
     std::vector<node> run()
     {
         std::vector<node> res;
@@ -541,6 +577,10 @@ namespace parser
             else if(look_now().type == import_kw)
             {
                 res.push_back(get_import());
+            }
+            else if(look_now().type == namespace_kw)
+            {
+                res.push_back(get_namespace());
             }
             else
             {
