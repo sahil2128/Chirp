@@ -12,4 +12,18 @@
 
 <br>
 
-This readme will be updated soon, we are in the process of fixing the repository.
+# What's this
+
+Currently, this repository is hosting the source code for an *experimental* compiler, that only targets C. The goal is to write a compiler in chirp using the one we have right now. If you are looking to contribute, improvements to the user experience would greatly be appreciated.
+
+# Building
+
+## Unix
+
+These are the dependencies required to build Chirp on Unix-like systems:
+* `g++` 5.5 or later
+* GNU `make`
+
+## Windows
+
+Currently there's no official way to build on windows, contribution would be greatly apreciated.
