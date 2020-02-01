@@ -23,6 +23,7 @@ Currently, this repository is hosting the source code for an *experimental* comp
 These are the dependencies required to build Chirp on Unix-like systems:
 * `g++` 5.5 or later
 * GNU `make`
+* `nasm`
 
 ## Windows
 
