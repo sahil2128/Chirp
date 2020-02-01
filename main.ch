@@ -1,0 +1,5 @@
+import "other.ch"
+
+entry
+{
+}
