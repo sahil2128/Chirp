@@ -4,6 +4,7 @@
 #include "gen/gen.hpp"
 
 #include "settings.hpp"
+#include "build.hpp"
 #include "log.hpp"
 
 #include <iostream>
@@ -29,7 +30,7 @@ int main(int argc,char* argv[])
 
         std::string target = std::string(argv[1]);
         std::vector<std::string> fvalue = utils::read_lines(target); // File value
-        gen::generate(parser::parse(fvalue));
+        build::build_file(gen::generate(parser::parse(fvalue)),target);
     }
     return 0;
 }

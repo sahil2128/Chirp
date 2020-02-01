@@ -9,7 +9,17 @@ namespace utils
 {
     void write(std::string filename,std::string data)
     {
-        
+        std::ofstream file(filename);
+
+        if(!file)
+        {
+            log(error,"Couldn't write to file named: " + filename);
+        }
+        else
+        {
+            file << data;
+            file.close();
+        }
     }
 
     std::vector<std::string> read_lines(std::string filename)
