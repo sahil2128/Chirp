@@ -55,6 +55,7 @@ namespace gen
             
         }
 
+        log(debug,result);
         //std::cout<<result<<std::endl;
         return result;
     }

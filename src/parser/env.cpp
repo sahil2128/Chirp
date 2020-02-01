@@ -20,6 +20,11 @@ namespace parser
 
         tokens = lexe(lines);
 
+        for(token t : tokens)
+        {
+            log(debug,">" + t.value + "< : " + std::to_string(t.type));
+        }
+
         //std::cout<<"--=== PARSING ===--"<<std::endl;
         log(debug,"--=== PARSER ===--");
 

@@ -2,6 +2,7 @@
 #include "variable.hpp" 
 #include "function.hpp"
 #include "values.hpp"
+#include "loop.hpp"
 
 #include "log.hpp"
 
@@ -26,7 +27,7 @@ namespace gen
         {
             res = gen_var_dec(n);
         }
-        else if(n.value == "assign")
+        else if(n.value == "assignment")
         {
             res = gen_assign(n);
         }
@@ -37,6 +38,14 @@ namespace gen
         else if(n.value == "return")
         {
             res = gen_ret(n);
+        }
+        else if(n.value == "while")
+        {
+            res = gen_while(n);
+        }
+        else if(n.value == "if")
+        {
+            res = gen_if(n);
         }
         else
         {

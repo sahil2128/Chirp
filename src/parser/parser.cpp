@@ -80,6 +80,22 @@ namespace parser
         {
             return "equals";
         }
+        else if(sym == "<")
+        {
+            return "bigger";
+        }
+        else if(sym == ">")
+        {
+            return "smaller";
+        }
+        else if(sym == "<=")
+        {
+            return "smaller_equals";
+        }
+        else if(sym == ">=")
+        {
+            return "bigger_equals";
+        }
         else
         {
             // error
@@ -107,25 +123,6 @@ namespace parser
         return o;
     }
 
-    node get_condition()
-    {
-        node c;
-        node op = get_operand();
-
-        // Comparaisons
-        if(match(cond_op))
-        {
-            c.value = get_conditional_op(look_back().value);
-
-            c.push(op);
-            c.push(get_operand());
-        }
-
-        // Booleans values
-
-        return c;
-    }
-
     node get_expr()
     {
         node e;
@@ -146,6 +143,25 @@ namespace parser
         }
 
         return e;
+    }
+
+    node get_condition()
+    {
+        node c;
+        node op = get_expr();
+
+        // Comparaisons
+        if(match(cond_op))
+        {
+            c.value = get_conditional_op(look_back().value);
+
+            c.push(op);
+            c.push(get_expr());
+        }
+
+        // Booleans values
+
+        return c;
     }
     // --- END OF THE USEFULL SECTION ---
     
@@ -296,7 +312,7 @@ namespace parser
         while(!match(rparen))
         {
             n.push(get_expr());
-            expect(comma);
+            match(comma);
         }
 
         return n;
@@ -328,6 +344,7 @@ namespace parser
         std::string id = look_now().value;
         expect(ident);
         n.push(node("identifier")).push(id);
+        n.push(node("arguments")).push(get_args());
 
         return n;
     }
@@ -399,7 +416,7 @@ namespace parser
         c.push(get_condition());
         w.push(get_compound_stmt());
 
-        c.push(c);
+        w.push(c);
 
         return w;
     }
