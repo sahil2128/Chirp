@@ -413,12 +413,28 @@ namespace parser
 
         c.push(get_condition());
         i.push(get_compound_stmt());
-        
-        if(match(else_kw)) {}
 
         i.push(c);
 
         return i;
+    }
+
+    node get_else_stmt()
+    {
+        node e("else");
+
+        expect(else_kw);
+
+        if(look_now().type != lbrace)
+        {
+            node c("condition");
+            c.push(get_condition());
+            e.push(c);
+        }
+
+        e.push(get_compound_stmt());
+
+        return e;
     }
 
     node get_while_stmt()
@@ -457,7 +473,7 @@ namespace parser
     node get_func()
     {
         node f("function");
-        log(debug,"Getting function");
+        log(debug,"Starting function parsing");
 
         std::string dt = look_now().value;
         expect(dtype);
@@ -469,6 +485,8 @@ namespace parser
         f.push(node("identifier")).push(node(id));
         f.push(get_params());
         f.push(get_compound_stmt());
+
+        log(debug,"Finished function parsing");
 
         return f;
     }
@@ -486,6 +504,10 @@ namespace parser
             case if_kw:
             // log(debug,"Got if keyword");
             s = get_if_stmt();
+            break;
+            
+            case else_kw:
+            s = get_else_stmt();
             break;
 
             case while_kw:
@@ -529,6 +551,7 @@ namespace parser
     node get_namespace()
     {
         node n("namespace");
+        log(debug,"Start parsing namespace");
         expect(namespace_kw);
 
         std::string id = look_now().value;
@@ -541,9 +564,12 @@ namespace parser
 
         while(!match(rbrace))
         {
+            log(debug,"a" + look_now().value);
             n.get("level").push(get_func());
+            log(debug,"b" + look_now().value);
         }
 
+        log(debug,"Done namespace");
         return n;
     }
 
@@ -581,11 +607,12 @@ namespace parser
             else if(look_now().type == namespace_kw)
             {
                 res.push_back(get_namespace());
+                log(debug,"d " + look_now().value);
             }
             else
             {
                 // error
-                //log(warning,"Unrecognized statement on top-level");
+                log(warning,"Unrecognized statement on top-level");
             }
         }
 

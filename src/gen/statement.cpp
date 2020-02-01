@@ -27,6 +27,14 @@ namespace gen
         {
             res = gen_var_dec(n);
         }
+        else if(n.value == "if")
+        {
+            res = gen_if(n);
+        }
+        else if(n.value == "else")
+        {
+            res = gen_else(n);
+        }
         else if(n.value == "assignment")
         {
             res = gen_assign(n);
@@ -42,10 +50,6 @@ namespace gen
         else if(n.value == "while")
         {
             res = gen_while(n);
-        }
-        else if(n.value == "if")
-        {
-            res = gen_if(n);
         }
         else
         {

@@ -8,5 +8,6 @@
 namespace gen
 {
     std::string gen_if(node);
+    std::string gen_else(node);
     std::string gen_while(node);
 }
