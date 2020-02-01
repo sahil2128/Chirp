@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "../log.hpp"
+
 namespace utils
 {
     void write(std::string filename,std::string data)
@@ -15,6 +17,13 @@ namespace utils
         std::vector<std::string> res;
 
         std::ifstream file(filename);
+
+        if(!file)
+        {
+            log(error,"Couldn't open file named: " + filename);
+            std::exit(-1);
+        }
+
         std::string line;
 
         while(std::getline(file,line))

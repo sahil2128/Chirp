@@ -3,7 +3,7 @@
 #include "parser/env.hpp"
 #include "gen/gen.hpp"
 
-#include "cmd.hpp"
+#include "settings.hpp"
 #include "log.hpp"
 
 #include <iostream>
@@ -17,10 +17,19 @@ int main(int argc,char* argv[])
     }
     else
     {
+        for(int i = 1; i < argc; i++)
+        {
+            std::string arg = argv[i];
+            
+            if(arg.at(0) == '-')
+            {
+                settings::toggle_option(arg);
+            }
+        }
+
         std::string target = std::string(argv[1]);
         std::vector<std::string> fvalue = utils::read_lines(target); // File value
         gen::generate(parser::parse(fvalue));
     }
-
     return 0;
 }
