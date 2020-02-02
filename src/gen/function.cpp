@@ -1,7 +1,10 @@
 #include "function.hpp"
 #include "compound.hpp"
 #include "variable.hpp"
+#include "values.hpp"
 #include "types.hpp"
+
+#include "../log.hpp"
 
 namespace gen
 {
@@ -12,7 +15,7 @@ namespace gen
     {
         std::string res;
 
-        res += "int main()";
+        res += "int entry()";
         res += gen_compound(n.get("compound"));
 
         // TODO: Give error if
@@ -21,9 +24,49 @@ namespace gen
         return res;
     }
 
+    // No overloading yet
     std::string gen_function_call(node n)
     {
         std::string res;
+        std::string id;
+
+        log(debug,"Generating function call");
+
+        for(char c : n.get("identifier").get(0).value)
+        {
+            if(c == '.')
+            {
+                id += "_";
+            }
+            else
+            {
+                id += c; 
+            }
+        }
+
+        res += id;
+
+        bool hasArgs = false;
+
+        res += "(";
+
+        for(node arg : n.get("args").get_all())
+        {
+            if(arg.value != "")
+            {
+                log(debug,arg.value);
+                res += gen_expr(arg);
+                res += ",";
+            }
+            hasArgs = true;
+        }
+
+        if(hasArgs)
+        {
+            res.pop_back();
+        }
+
+        res += ");";
 
         return res;
     }
@@ -62,7 +105,14 @@ namespace gen
         
         res += ")";
 
-        res += gen_compound(n.get("compound"));
+        if(n.get("compound").value != "undefined")
+        {
+            res += gen_compound(n.get("compound"));
+        }
+        else
+        {
+            res += ";";
+        }
 
         return res;
     }

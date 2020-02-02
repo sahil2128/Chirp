@@ -33,6 +33,10 @@ namespace parser
             {
                 d.push(node("pointer"));
             }
+            else if(t.value == "none")
+            {
+                d.push(node("none"));
+            }
             else if(t.value == "int")
             {
                 d.push(node("int"));
@@ -48,6 +52,10 @@ namespace parser
             else if(t.value == "byte")
             {
                 d.push(node("byte"));
+            }
+            else if(t.value == "long")
+            {
+                d.push(node("long"));
             }
             else
             {
@@ -322,7 +330,9 @@ namespace parser
 
     node get_args()
     {
-        node n;
+        node n("args");
+
+        expect(lparen);
 
         while(!match(rparen))
         {
@@ -354,12 +364,12 @@ namespace parser
 
     node get_call()
     {
-        node n;
+        node n("call");
 
         std::string id = look_now().value;
         expect(ident);
         n.push(node("identifier")).push(id);
-        n.push(node("arguments")).push(get_args());
+        n.push(get_args());
 
         return n;
     }
@@ -475,16 +485,22 @@ namespace parser
         node f("function");
         log(debug,"Starting function parsing");
 
-        std::string dt = look_now().value;
-        expect(dtype);
+        //std::string dt = look_now().value;
+        //expect(dtype);
+
+        f.push(get_dtype());
 
         std::string id = look_now().value;
         expect(ident);
 
-        f.push(node("data_type")).push(node(dt));
+        //f.push(node("data_type")).push(node(dt));
         f.push(node("identifier")).push(node(id));
         f.push(get_params());
-        f.push(get_compound_stmt());
+        
+        if(look_now().type == lbrace)
+        {
+            f.push(get_compound_stmt());
+        }
 
         log(debug,"Finished function parsing");
 

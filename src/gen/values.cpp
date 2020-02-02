@@ -15,10 +15,6 @@ namespace gen
         {
             res += n.get(0).value;
         }
-        else if(n.value != "undefined")
-        {
-            res += n.get(0).value;
-        }
         else
         {
             // Might have to be an error

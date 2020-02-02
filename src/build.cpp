@@ -47,7 +47,7 @@ namespace build
     void delete_file()
     {
         // Unefficient, should be changed
-        //system("rm temp.c");
+        system("rm temp.c");
     }
 
     void build_file(std::string content, std::string target)
@@ -57,7 +57,7 @@ namespace build
         
         if(command_exists("gcc"))
         {
-            std::string cmd = "gcc temp.c -o ";
+            std::string cmd = "gcc temp.c -w -c -nostdlib -o ";
             cmd += o;
 
             system(cmd.c_str());
