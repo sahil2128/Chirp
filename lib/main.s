@@ -4,9 +4,11 @@ section .text
     global _start
     global raw_syscall
 
+extern entry
+
 ; Temporary for this one compiler
 _start:
-mov 0,rbp
+xor rbp,rbp
 pop rdi
 mov rsi,rsp
 and rsp,-16

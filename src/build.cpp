@@ -2,6 +2,8 @@
 #include "log.hpp"
 
 #include "utils/io.hpp"
+
+#include <unistd.h>
 #include <iostream>
 
 std::string o;
@@ -59,14 +61,17 @@ namespace build
         {
             std::string cmd = "gcc temp.c -w -c -nostdlib -o ";
             cmd += o;
+            cmd += ".o";
 
             system(cmd.c_str());
+
+            std::string ld = "ld lib/syscall.o " + o + ".o ";
+            system(ld.c_str());
         }
         else if (command_exists("clang"))
         {
             std::string cmd = "clang temp.c -o ";
             cmd += o;
-
             system(cmd.c_str());
         }
         else
