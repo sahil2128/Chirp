@@ -25,6 +25,17 @@ These are the dependencies required to build Chirp on Unix-like systems:
 * GNU `make`
 * `nasm`
 
+```sh
+# Creates the bin directory
+$ make setup
+
+# Compiles the code
+$ make
+
+# You can use chirp now!
+$ ./chirp 
+```
+
 ## Windows
 
 Currently there's no official way to build on windows, contribution would be greatly apreciated.
