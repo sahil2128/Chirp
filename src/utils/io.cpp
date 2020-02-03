@@ -39,9 +39,12 @@ namespace utils
         while(std::getline(file,line))
         {
             // Removing carriage returns
-            if(line.at(line.size() - 1) == (int)13)
+            if(line.size() > 0)
             {
-                line.pop_back();
+                if(line.at(line.size() - 1) == (int)13)
+                {
+                    line.pop_back();
+                }
             }
 
             res.push_back(line);
