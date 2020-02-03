@@ -64,4 +64,7 @@ namespace parser
     Goes back to the marked location
     */
     void go_back();
+
+    // Returrns the index in the token vector
+    int get_pos();
 }

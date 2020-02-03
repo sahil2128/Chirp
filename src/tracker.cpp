@@ -1,91 +1,55 @@
 #include "tracker.hpp"
 
+#include <iostream>
+
 namespace tracker
 {
-    std::vector<std::vector<std::string>> source;
-    std::vector<std::string> line; // current line
+    std::vector<std::string> source_file;
+    std::vector<location> locations;
+    int cline = 0; // current line
 
-    int col = 0; // source.at(col)
-    int cursor = 0; // source.at(col).at(cursor)
 
-    std::vector<std::string> get_line()
+    location push_token(int _start,int _stop)
     {
-        return source.at(col);
+        location l;
+
+        l.start = _start;
+        l.stop = _stop;
+        l.line = cline;
+
+        locations.push_back(l);
+
+        //std::cout<<locations.size()<<":"<<l.line<<":"<<l.start<<"-"<<l.stop<<std::endl;
+
+        return l;
     }
 
-    std::vector<std::string> get_line(int pos)
+    location get_token_location(int id)
     {
-        return source.at(pos);
+        // Should not pose any problem
+        // because the number of locations
+        // is supposed to be the same
+        // as the number of tokens.
+        return locations.at(id);
     }
 
-    void push_word(std::string word)
+    void next_line()
     {
-        line.push_back(word);
-        cursor++;
+        cline++;
     }
 
-    void push_line()
+    std::string get_line(int i)
     {
-        source.push_back(line);
-        col++;
-        line.clear();
+        return source_file.at(i);
     }
 
-    bool next_word()
+    int get_line_count()
     {
-        if(source.at(col).size() - 1 < cursor + 1)
-        {
-            // Next line
-            cursor = 0;
-            col++;
-        }
-        else
-        {
-            cursor++;
-        }
+        return source_file.size() - 1;
     }
 
-    bool next_line()
+    void set_source(std::vector<std::string> s)
     {
-        col++;
-    }
-
-    void to_word(int tpos)
-    {
-        
-    }
-
-    void to_start()
-    {
-        col = 0;
-        cursor = 0;
-    }
-
-    int get_col()
-    {
-        return col;
-    }
-
-    int get_cursor()
-    {
-        return cursor;
-    }
-
-    void to_col(int c)
-    {
-        col = c;
-    }
-
-    void to_row(int r)
-    {
-        cursor = r;
-    }
-
-    void reset()
-    {
-        col = 0;
-        cursor = 0;
-        line.clear();
-        source.clear();
+        source_file = s;
     }
 }

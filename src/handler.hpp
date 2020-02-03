@@ -7,27 +7,13 @@ Error handler, handles erorrs
 
 namespace handler
 {
-    class err
-    {
-        public:
-        std::string msg;
-        int col;
-        int row;
-    };
-
     /*
-    Dumps the current line
+    Handler
     */
-    void dump();
-
+    void error_at_line(std::string,int);
+    
     /*
-    Add an error to the accumulated errors
+    Dumps error at specified token
     */
-    void acc_error(std::string);
-
-    /*
-    Will exits for all the accumulated errors.
-    If there's no errors then it will return false
-    */
-    bool run_errors();
+    void error_at_token(std::string,int);
 }

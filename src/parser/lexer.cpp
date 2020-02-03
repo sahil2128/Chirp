@@ -12,6 +12,9 @@ well or has problems expanding, then changing it is highly recommended
 
 namespace parser
 {
+    int col = 0;
+    int tkn_start = 0;
+
     token get_token_word(std::string word)
     {
         token t;
@@ -109,6 +112,10 @@ namespace parser
             case ',':
             t.type = comma;
             break;
+
+            case '$':
+            t.type = deref;
+            break;
         }
         return t;
     }
@@ -117,8 +124,6 @@ namespace parser
     {
         std::vector<token> res;
         int pos = 0;
-
-        //tracker::reset();
 
         std::string word;
 
@@ -132,44 +137,55 @@ namespace parser
                 if(c == '"')
                 {
                     token t;
+                    int start = i;
+
                     t.type = literal;
                     i++;
                     t.value += "\"";
+
                     while(line.at(i) != '"')
                     {
                         t.value += line.at(i);
                         i++;
                     }
+
                     t.value += "\"";
                     res.push_back(t);
-                    tracker::push_word(t.value);
+
+                    tracker::push_token(start,i);
+                }
+                else if(c == '#')
+                {
+                    break;
                 }
                 else if(isspace(c))
                 {
                     if(!word.empty())
                     {
                         res.push_back(get_token_word(word));
-                        tracker::push_word(word);
-                        word.clear();   
+                        tracker::push_token(i - word.size(),i);
+                        word.clear();
                     }
                 }
+                // --- TERRIBLE STUFF STARTING ---
                 // Oof
                 else if(c == '{' || c == '}' || c == '(' || c == ')' 
-                || c == ':' || c == ',')
+                || c == ':' || c == ',' || c == '$')
                 {
                     if(!word.empty())
                     {
                         res.push_back(get_token_word(word));
-                        tracker::push_word(word);
+                        tracker::push_token( (i - word.size()) - 1,i - 1);
                     }
 
                     res.push_back(get_token_char(c));
-                    tracker::push_word(std::string(1,c));
+                    tracker::push_token(i - 1,i);
                     word.clear();
                 }
-                // --- TERRIBLE STUFF STARTING ---
                 else if(c == '+' || c == '-' || c == '*' || c == '/')
                 {
+                    int strt = i;
+
                     token t;
                     t.value += c;
 
@@ -181,10 +197,11 @@ namespace parser
 
                     t.type = math_op;
                     res.push_back(t);
-                    tracker::push_word(t.value);
+                    tracker::push_token(strt,i);
                 }
                 else if(c == '<' || c == '>' || c == '!' || c == '=')
                 {
+                    int strt = i;
                     token t;
                     t.value += c;
                     t.type = cond_op;
@@ -199,22 +216,15 @@ namespace parser
                         t.type = assign;
                     }
                     res.push_back(t);
-                    tracker::push_word(t.value);
+                    tracker::push_token(strt,i);
                 }
-            /*    else if(c == '=')
-                {
-                    token t;
-                    t.value = "=";
-                    t.type = assign;
-                    tracker::push_word("=");
-                } */
                 // --- TERRIBLE STUFF DONE ---
                 else
                 {
                     word += c;
                 }
             }
-            tracker::push_line();
+            tracker::next_line();
         }
 
         token end;

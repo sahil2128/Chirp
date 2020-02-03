@@ -12,6 +12,7 @@ namespace parser
         confirm, // :
         assign, // =
         comma,
+        deref,
         math_op, // Math operator
         cond_op, // Conditional Operator
         // Keywords
@@ -27,6 +28,7 @@ namespace parser
         ident,
         literal,
         unknown,
+        out_of_range,
         eof
     };
 

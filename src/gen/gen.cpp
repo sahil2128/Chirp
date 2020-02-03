@@ -70,7 +70,7 @@ namespace gen
             else
             {
                 // Error
-                handler::acc_error("Unrecognized top-level statement");
+                //handler::acc_error("Unrecognized top-level statement");
             }
             
         }

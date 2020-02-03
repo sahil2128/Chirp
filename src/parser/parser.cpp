@@ -91,7 +91,6 @@ namespace parser
         {
             res = "unknown";
             // Error or something
-            handler::acc_error("Unrecognized math operator");
         }
 
         return res;
@@ -203,12 +202,12 @@ namespace parser
         return false;
     }
 
-    // Return true if is function declaration
+    // Return true if is function definition
     bool is_func()
     {
         mark_location();
 
-        if(match(dtype) && match(ident))
+        if(match(dtype) && match(ident) && match(lparen))
         {
             go_back();
             return true;
@@ -406,6 +405,13 @@ namespace parser
         {
             n = get_ret();
         }
+        else
+        {
+            log(error,"Unexpected expressive statement");
+            n.value = "error";
+            n.push(node(std::to_string(get_pos())));
+            next();
+        }
 
         return n;
     }
@@ -491,7 +497,11 @@ namespace parser
         f.push(get_dtype());
 
         std::string id = look_now().value;
-        expect(ident);
+        if(!expect(ident))
+        {
+            f = node("error");
+            return f;
+        }
 
         //f.push(node("data_type")).push(node(dt));
         f.push(node("identifier")).push(node(id));
@@ -603,8 +613,8 @@ namespace parser
             if(is_func())
             {
                 // get function
-                res.push_back(get_func());
                 log(debug,"Found function on top-level");
+                res.push_back(get_func());
             }
             else if(is_decl())
             {
@@ -628,7 +638,10 @@ namespace parser
             else
             {
                 // error
-                log(warning,"Unrecognized statement on top-level");
+                
+                //log(error,"Unexpected statement: " + look_now().value);
+                //next();
+                //log(warning,"Unrecognized statement on top-level");
             }
         }
 

@@ -28,7 +28,7 @@ namespace gen
 
         variable var;
         var.name = "undefined"; // oof
-        handler::acc_error("Variable " + id + " isn't declared yet.");
+        //handler::acc_error("Variable " + id + " isn't declared yet.");
         return var;
     }
     

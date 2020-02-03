@@ -15,6 +15,5 @@ none write(int: fd, ptr: data, long int: size)
 entry
 {
     write(1,"Hello,World!\n",14)
-
     ret 0
 }

@@ -2,8 +2,10 @@
 #include "lexer.hpp"
 #include "tracker.hpp"
 #include "parser.hpp"
+
 #include "../log.hpp"
 #include "../handler.hpp"
+#include "../tracker.hpp"
 
 #include <iostream>
 
@@ -31,13 +33,7 @@ namespace parser
         pos = 0;
         marked = 0;
 
-        tracker::to_start();
         std::vector<node> n = run();
-
-        // Should handle errors here instead of aborting when
-        // you get a new erorr, and stopping the parser from
-        // finding other errors.
-        handler::run_errors();
 
         return n;
     }
@@ -48,7 +44,6 @@ namespace parser
         {
             //log(debug,"Matched " + std::to_string((int)t));
             pos++;
-            tracker::next_word();
             return true;
         }
         return false;
@@ -59,16 +54,23 @@ namespace parser
         if(tokens.at(pos).type == t)
         {
             pos++;
-            tracker::next_word();
             return true;
+        }        
+        // Code to throw the error not done yet
+
+        if(tokens.at(pos).type == eof)
+        {
+            handler::error_at_line(
+                "Unexpected end of file",
+                tracker::get_token_location(pos - 1).line
+                );
+        }
+        else
+        {
+            handler::error_at_token("Unexpected token",pos);
         }
 
-        tracker::next_word();
-        //handler::dump();
-        handler::acc_error("Unexpected token: " + tokens.at(pos).value + ", expected token id: " + std::to_string(t));
         next();
-        
-        // Code to throw the error not done yet
         return false;
     }
 
@@ -85,17 +87,33 @@ namespace parser
 
     token look_forward()
     {
-        return tokens.at(pos + 1);
+        if(pos + 1 >= tokens.size())
+        {
+            log(debug,"Tried to look outside of token list");
+            token t;
+            t.type = out_of_range;
+            return t;
+        }
+        else 
+        {
+            return tokens.at(pos + 1);
+        }
     }
 
     token look_now()
     {
+        
         return tokens.at(pos);
     }
 
     token look_back()
     {
         return tokens.at(pos - 1);
+    }
+
+    int get_pos()
+    {
+        return pos;
     }
 
     void mark_location()

@@ -9,61 +9,51 @@ semantic analysis to throw errors.
 
 namespace tracker
 {
-    /*
-    Returns the current line, as a string
-    */
-    std::vector<std::string> get_line();
+    class location
+    {
+        public:
+        int start; // Starting position
+        int stop; // Stopping position
+        int line; // Line where the token is located
+    };
 
     /*
-    Returns the line at specified column
+    Gives token location to the tracker.
+    --- Parameters ---
+
+    int index, index of the token 
+    in the token vector
+
+    int start, starting position in the input line
+
+    int stop, stoping position in the input line
     */
-    std::vector<std::string> get_line(int);
+    location push_token(int,int);
 
     /*
-    Adds the string to the current line
+    Returns the location of token, at given
+    index in vector.
     */
-    void push_word(std::string);
+    location get_token_location(int);
 
     /*
-    Saves all the pushed words in the current line, and goes to the next one
+    Tells the tracker that's it at the next line
     */
-    void push_line();
+    void next_line();
 
     /*
-    Goes to the next word
-    Return false, if you can't go next
+    Returns line as a string at specific row
     */
-    bool next_word();
+    std::string get_line(int);
 
     /*
-    Goes to the next line
-    Return false, if you can't go next
+    Returns the size(in lines) of source file
     */
-    bool next_line();
+    int get_line_count();
 
     /*
-    Moves the cursor to the specified token position, and also makes the
-    line the line where the token is.
+    Sets the source file as a
+    vector of strings for each line
     */
-   void to_word(int);
-
-   /*
-   Returns to the earliest tracked word
-   */
-   void to_start();
-
-    /*
-    Returns the current line column
-    */
-    int get_col();
-
-    /*
-    Returns the current cursor(row)
-    */
-    int get_cursor();
-
-    void to_col(int);
-    void to_row(int);
-
-    void reset();
+    void set_source(std::vector<std::string>);
 }

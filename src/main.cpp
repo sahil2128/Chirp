@@ -5,6 +5,7 @@
 
 #include "settings.hpp"
 #include "build.hpp"
+#include "tracker.hpp"
 #include "log.hpp"
 
 #include <iostream>
@@ -30,6 +31,7 @@ int main(int argc,char* argv[])
 
         std::string target = std::string(argv[1]);
         std::vector<std::string> fvalue = utils::read_lines(target); // File value
+        tracker::set_source(fvalue);
         build::build_file(gen::generate(parser::parse(fvalue)),target);
     }
     return 0;
