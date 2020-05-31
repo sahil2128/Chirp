@@ -11,9 +11,3 @@ none write(int: fd, ptr: data, long int: size)
 {
     raw_syscall(1,fd,data,size,0,0)
 }
-
-entry
-{
-    write(1,"Hello,World!\n",14)
-    ret 0
-}
