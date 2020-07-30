@@ -76,7 +76,7 @@ namespace build
         }
         else
         {
-            log(error,"No C compiler is installed on this computer.");
+            log(error,"No C compatible compiler is installed on this computer.");
             log(error,"Please install gcc or clang");
         }
 
