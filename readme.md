@@ -14,7 +14,7 @@
 
 # What's this
 
-Currently, this repository is hosting the source code for an *experimental* compiler, that only targets C. The goal is to write a compiler in chirp using the one we have right now. If you are looking to contribute, improvements to the user experience would greatly be appreciated.
+Currently, this repository is hosting the source code for an *experimental* compiler, that only targets C. The goal is to write a compiler in chirp using the one we have right now. it's open source and works with the three major desktop operating systems (Windows, macOS, and Linux), but if you have a choice, use Windows because it avoids some minor frustrations.If you are looking to contribute, improvements to the user experience would greatly be appreciated.
 
 # Building
 
